@@ -1,15 +1,13 @@
 import React from "react";
-import { IoStar } from "react-icons/io5";
+import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 
 function RatingStars({
   rating,
   className,
-  starClass,
 }: {
   rating: number;
   className?: string;
-  starClass?: string;
 }) {
   return (
     <div className={twMerge("flex gap-1", className)}>
@@ -19,18 +17,21 @@ function RatingStars({
         return (
           <div
             key={index}
-            className={twMerge(
-              `${
-                filledRating
-                  ? "text-orange-600"
-                  : halfFilled
-                  ? " text-yellow-500"
-                  : "opacity-70 "
-              }`,
-              starClass
-            )}
+            className={`${
+              filledRating
+                ? "text-yellow-500"
+                : halfFilled
+                ? " text-yellow-500"
+                : "opacity-70 "
+            }`}
           >
-            <IoStar />
+            {filledRating ? (
+              <FaStar />
+            ) : halfFilled ? (
+              <FaStarHalfAlt />
+            ) : (
+              <FaRegStar />
+            )}
           </div>
         );
       })}

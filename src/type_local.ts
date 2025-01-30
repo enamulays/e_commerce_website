@@ -1,3 +1,27 @@
+export interface User {
+  _id:                   string;
+  name:                  string;
+  username:              string;
+  email:                 string;
+  avatar:                string;
+  mobile:                null;
+  refresh_token:         string;
+  verify_email:          boolean;
+  last_loginDate:        null;
+  status:                string;
+  gender:                string;
+  birthday:              null;
+  address_details:       unknown[];
+  shoppingCart:          unknown[];
+  oderHistoy:            unknown[];
+  forgotPasswordOtp:     null;
+  forgotPasswordExpires: null;
+  role:                  string;
+  createdAt:             Date;
+  updatedAt:             Date;
+}
+
+
 export type ProductReview = {
   rating: number;
   comment: string;
@@ -42,7 +66,9 @@ export type Product = {
   meta: ProductMeta;
   thumbnail: string;
   images: string[];
+  quantity?: number;
 };
+
 
 export type ProductsListType = {
   products: Product[];

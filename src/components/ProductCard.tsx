@@ -12,6 +12,9 @@ import ProductPrice from "./ProductPrice";
 import AddToCartButton from "./AddToCartButton";
 
 function ProductCard({ product }: { product: Product }) {
+
+  
+
   return (
     <div className="flex flex-col justify-start border border-gray-400 rounded-lg relative hover:shadow-black/30 overflow-hidden hover:shadow-lg duration-200 group">
       {/* Image Area */}
@@ -47,7 +50,7 @@ function ProductCard({ product }: { product: Product }) {
           <ProductPrice product={product} />
         </div>
         <div className="flex justify-center mt-4">
-          <AddToCartButton />
+          <AddToCartButton product={product}/>
         </div>
       </div>
 

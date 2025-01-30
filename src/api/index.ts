@@ -1,3 +1,5 @@
+
+
 export async function getData(endPoint: string) {
   const response = await fetch(endPoint, {
     method: "GET",
@@ -9,3 +11,9 @@ export async function getData(endPoint: string) {
   const data = response.json();
   return data;
 }
+
+export async function singleProductData() {
+  return await getData("https://fakestoreapi.com/products/1");
+}
+
+
