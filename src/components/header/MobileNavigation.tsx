@@ -1,5 +1,5 @@
 "use client";
-import { navigation } from "@/constants";
+import { navigation } from "@/constants/data";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import Link from "next/link";
 import React, { useState } from "react";

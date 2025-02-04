@@ -18,7 +18,7 @@ function MiddleHeader({
   handleLogout: () => void;
 }) {
   return (
-    <div className="border-b-[1px] border-b-gray-400 ">
+    <div className="border-b-[1px] border-b-gray-400 bg-white z-10">
       <Container className="py-5 flex items-center gap-4 md:gap-6 lg:gap-20 justify-between">
         <Link href={"/"}>
           <Image src={logo} alt="logo" className="w-28 " />

@@ -13,15 +13,14 @@ import AddToCartButton from "./AddToCartButton";
 
 function ProductCard({ product }: { product: Product }) {
 
-  
 
   return (
     <div className="flex flex-col justify-start border border-gray-400 rounded-lg relative hover:shadow-black/30 overflow-hidden hover:shadow-lg duration-200 group">
       {/* Image Area */}
       <Link
         href={{
-          pathname: `/products/${product?.id}`,
-          query: { id: product?.id },
+          pathname: `/products/${product?._id}`,
+          query: { title: product?.title },
         }}
         className="h-60 relative"
       >

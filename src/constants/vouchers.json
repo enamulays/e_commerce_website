@@ -1,0 +1,67 @@
+[
+  {
+    "id": "VOUCHER001",
+    "code": "SAVE10",
+    "description": "Get 10% off on your next purchase.",
+    "discountType": "percentage",
+    "discountValue": 10,
+    "minPurchase": 50,
+    "maxDiscount": 20,
+    "validFrom": "2024-11-28",
+    "validUntil": "2024-12-31",
+    "usageLimit": 100,
+    "usedCount": 25
+  },
+  {
+    "id": "VOUCHER002",
+    "code": "FREESHIP",
+    "description": "Free shipping on orders over ৳30.",
+    "discountType": "flat",
+    "discountValue": 5,
+    "minPurchase": 30,
+    "maxDiscount": null,
+    "validFrom": "2024-11-01",
+    "validUntil": "2024-11-30",
+    "usageLimit": 200,
+    "usedCount": 75
+  },
+  {
+    "id": "VOUCHER003",
+    "code": "BLACKFRIDAY",
+    "description": "Flat ৳15 off for Black Friday deals.",
+    "discountType": "flat",
+    "discountValue": 15,
+    "minPurchase": 100,
+    "maxDiscount": null,
+    "validFrom": "2024-11-28",
+    "validUntil": "2024-11-29",
+    "usageLimit": 50,
+    "usedCount": 10
+  },
+  {
+    "id": "VOUCHER004",
+    "code": "NEWUSER20",
+    "description": "20% off for new users.",
+    "discountType": "percentage",
+    "discountValue": 20,
+    "minPurchase": 0,
+    "maxDiscount": 50,
+    "validFrom": "2024-11-01",
+    "validUntil": "2025-01-01",
+    "usageLimit": 1,
+    "usedCount": 0
+  },
+  {
+    "id": "VOUCHER005",
+    "code": "CYBERMONDAY",
+    "description": "Save ৳25 on orders over ৳150 this Cyber Monday.",
+    "discountType": "flat",
+    "discountValue": 25,
+    "minPurchase": 150,
+    "maxDiscount": null,
+    "validFrom": "2024-11-28",
+    "validUntil": "2024-12-01",
+    "usageLimit": 70,
+    "usedCount": 20
+  }
+]

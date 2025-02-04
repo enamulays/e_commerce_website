@@ -6,7 +6,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
   }),
-  
+
   endpoints: (builder) => ({
     //get login user api
     user: builder.query({
@@ -26,6 +26,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+
     //Update user data api
     updateUser: builder.mutation({
       query: (updateData) => ({
@@ -36,9 +37,23 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+
+    //Update user Address Data api
+    updateAddress: builder.mutation({
+      query: (addressData) => ({
+        url: "user/update/address",
+        method: "PUT",
+        credentials: "include",
+        body: addressData,
+      }),
+    }),
   }),
   tagTypes: ["User"],
 });
 
-export const { useUserQuery, useUserLogoutMutation, useUpdateUserMutation } =
-  userApi;
+export const {
+  useUserQuery,
+  useUserLogoutMutation,
+  useUpdateUserMutation,
+  useUpdateAddressMutation,
+} = userApi;

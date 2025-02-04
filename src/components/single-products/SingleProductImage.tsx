@@ -31,7 +31,7 @@ function SingleProductImage({ images }: { images: string[] }) {
           height={500}
           width={500}
           priority
-          className="w-full h-auto max-w-[500px]"
+          className="w-full h-auto max-w-[500px] max-h-[500px]"
         />
       </div>
     </div>

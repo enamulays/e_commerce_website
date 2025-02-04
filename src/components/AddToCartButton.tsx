@@ -3,10 +3,8 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import { twMerge } from "tailwind-merge";
 import { Product } from "@/type_local";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { addToCart } from "@/redux/reducers/cartReducer";
 import toast from "react-hot-toast";
+import { useAddToCartMutation } from "@/api/cartApi";
 
 function AddToCartButton({
   className,
@@ -15,17 +13,18 @@ function AddToCartButton({
   className?: string;
   product?: Product;
 }) {
-  const cartItems = useSelector(
-    (state: RootState) => state.cartReducer.cartItems
-  );
-  const dispatch = useDispatch();
+  const [addToCart] = useAddToCartMutation();
 
-  console.log(cartItems);
-
-  const handleAddToCart = () => {
-    if (product) {
-      dispatch(addToCart(product));
-      toast.success(product?.title.substring(0, 8) + "...added to cart")
+  const handleAddToCart = async () => {
+    try {
+      console.log(product);
+      const response = await addToCart(product).unwrap();
+      console.log(response);
+      if (product) {
+        toast.success(product?.title.substring(0, 8) + "...added to cart");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

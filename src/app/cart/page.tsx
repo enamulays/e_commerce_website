@@ -1,4 +1,4 @@
-import CartItems from "@/components/cart/CartItems";
+import CartItems from "@/components/cart/CartPage";
 import Container from "@/components/Container";
 import React from "react";
 

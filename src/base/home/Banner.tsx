@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import CustomButton from "@/components/CustomButton";
-import { bannerData as banner } from "@/constants";
+import { bannerData as banner } from "@/constants/data";
 import Image from "next/image";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa6";
