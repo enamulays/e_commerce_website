@@ -2,19 +2,10 @@
 
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-
+import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import vouchers from "@/constants/vouchers.json";
-import { useState } from "react";
-import { CartItem, VoucherItem } from "@/type_local";
+import { useEffect, useState } from "react";
+import { CartItem } from "@/type_local";
 import Link from "next/link";
 import { useUserQuery } from "@/api/userApi";
 import {
@@ -25,28 +16,56 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import {
+  useDeleteCartMutation,
+  useUpdateQuantityMutation,
+} from "@/api/cartApi";
+import toast from "react-hot-toast";
+import PaymentSection from "./PaymentSection";
 
 export default function CartPage() {
-  const { data, isLoading, isError, isFetching, isSuccess } = useUserQuery({});
-  const [voucherInputValue, setVoucherInputValue] = useState<string>("");
-  const [validVoucher, setValidVoucher] = useState<VoucherItem>();
-  const [inputValue, setInputValue] = useState<string>("1")
+  const { data, isError, isFetching, isSuccess, refetch } = useUserQuery({});
+  const [updateQuantity] = useUpdateQuantityMutation();
+  const [deleteCart] = useDeleteCartMutation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [cartItems, setCartItems] = useState<CartItem[]>(
+    data?.user?.shoppingCart ?? []
+  );
 
-  const handleSubmit = () => {};
-
-  const handleValidVoucher = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const voucherItem = vouchers.find(
-      (voucher) => voucher.code === voucherInputValue
-    );
-    if (voucherItem) {
-      setValidVoucher(voucherItem);
-      alert(`Voucher Applied: ${voucherItem.description}`);
-    } else {
-      setValidVoucher(undefined);
-      alert(`Invalid voucher code!`);
+  const handleUpdateQuantity = async (cartId: string, endPoints: string) => {
+    try {
+      const response = await updateQuantity({ cartId, endPoints }).unwrap();
+      toast.success(response?.message);
+      setCartItems((prevItem) =>
+        prevItem.map((cart) =>
+          cart._id === cartId
+            ? { ...cart, quantity: response?.updatedQuantity }
+            : cart
+        )
+      );
+    } catch (error) {
+      const err = error as { data?: { message?: string } };
+      toast.error(err?.data?.message);
     }
   };
+
+  const handleDeleteCart = async (cartId: string) => {
+    try {
+      const response = await deleteCart(cartId).unwrap();
+      toast.success(response?.message);
+      refetch();
+    } catch (error) {
+      const err = error as { data?: { message?: string } };
+      toast.error(err?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    if (data?.user?.shoppingCart) {
+      setCartItems(data?.user?.shoppingCart);
+    }
+    setIsLoading(false);
+  }, [data]);
 
   if (isFetching || isLoading) {
     return <div></div>;
@@ -55,35 +74,47 @@ export default function CartPage() {
     return <div>Failed to fetching data</div>;
   }
 
-  const cartItems: CartItem[] = data?.user?.shoppingCart ?? [];
+  if (cartItems.length <= 0) {
+    return (
+      <div className="h-screen flex flex-col justify-start mt-[10%] items-center">
+        <h2>There are no items in the cart</h2>
+        <Link
+          href={"/"}
+          className="text-orange-600 hover:text-orange-700 hover:bg-orange-100 mt-4 border border-orange-600
+              px-6 py-2 rounded-md"
+        >
+          Continue Shopping
+        </Link>
+      </div>
+    );
+  }
 
-  const price = cartItems.reduce(
-    (acc, value) => acc + value.productId.price * value.quantity,
-    0
-  );
-
-  const shippingFee = cartItems.length > 0 ? 80 : 0;
-  const totalPayAmount =
-    price + shippingFee - (validVoucher?.discountValue ?? 0);
-
-  console.log(cartItems);
   return (
     isSuccess && (
       <div className="space-y-4">
         <div className="grid gap-4 lg:grid-cols-[2fr_1fr] ">
           <div className="space-y-4">
-            {cartItems.length > 0 ? (
+            {cartItems.length > 0 &&
               cartItems.map((cart) => (
                 <Card key={cart._id} className="">
-                  <CardContent className="flex flex-col sm:flex-row items-center justify-between p-4">
+                  <CardContent className="flex flex-col sm:flex-row gap-4 items-center justify-between p-4">
                     <div className="flex justify-start gap-4">
-                      <Image
-                        src={cart?.productId?.images[0]}
-                        alt="image"
-                        height={100}
-                        width={100}
-                        priority
-                      />
+                      <Link
+                        href={{
+                          pathname: `/products/${cart?.productId?._id}`,
+                          query: cart?.productId?.title,
+                        }}
+                        className="max-h-36 max-w-36 h-auto w-full"
+                      >
+                        <Image
+                          src={cart?.productId?.images[0]}
+                          alt="image"
+                          height={100}
+                          width={100}
+                          className="max-h-36 max-w-36 h-auto w-full"
+                          priority
+                        />
+                      </Link>
                       <div>
                         <h3 className="font-semibold">
                           {cart?.productId?.title}
@@ -106,17 +137,26 @@ export default function CartPage() {
                       <Button
                         variant="outline"
                         size="icon"
-                        disabled={cart?.quantity === 1}
+                        type="button"
+                        disabled={cart?.quantity <= 1}
+                        onClick={() =>
+                          handleUpdateQuantity(cart?._id, "/cart/decrement")
+                        }
                       >
                         <FiMinus className="h-4 w-4" />
                       </Button>
-                      <Input
-                        type="number"
-                        className="w-16 text-center"
-                        value={cart?.quantity}
-                        onChange={(e)=>setInputValue(e.target.value)}
-                      />
-                      <Button variant="outline" size="icon">
+                      <div className="py-1 px-3 inline-flex border rounded-sm">
+                        {cart?.quantity}
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        type="button"
+                        disabled={cart?.quantity >= cart?.productId?.stock}
+                        onClick={() =>
+                          handleUpdateQuantity(cart?._id, "/cart/increment")
+                        }
+                      >
                         <FiPlus className="h-4 w-4" />
                       </Button>
                       <Dialog>
@@ -134,7 +174,7 @@ export default function CartPage() {
                             <Button
                               type="submit"
                               variant="destructive"
-                              // onClick={() => removeCartItems(item.id)}
+                              onClick={() => handleDeleteCart(cart?._id)}
                             >
                               Remove
                             </Button>
@@ -144,68 +184,9 @@ export default function CartPage() {
                     </div>
                   </CardContent>
                 </Card>
-              ))
-            ) : (
-              <div className="h-screen flex flex-col justify-start mt-[10%] items-center">
-                <h2>There are no items in the cart</h2>
-                <Link
-                  href={"/"}
-                  className="text-orange-600 hover:text-orange-700 hover:bg-orange-100 mt-4 border border-orange-600
-                      px-6 py-2 rounded-md"
-                >
-                  Continue Shopping
-                </Link>
-              </div>
-            )}
+              ))}
           </div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Location</CardTitle>
-              <CardDescription>Add Shipping Address</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="flex items-center justify-between border-b ">
-                  <h3>
-                    Subtotal (
-                    {cartItems.reduce((acc, value) => acc + value.quantity, 0)}{" "}
-                    items)
-                  </h3>
-                  <p>৳{price}</p>
-                </div>
-                <div className="flex items-center justify-between border-b">
-                  <h3>Shipping Fee</h3>
-                  <p>৳{shippingFee}</p>
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] w-full items-center gap-4">
-                  <Input
-                    id="name"
-                    placeholder="Enter Voucher Code"
-                    onChange={(e) => setVoucherInputValue(e.target.value)}
-                  />
-                  <Button
-                    variant="destructive"
-                    type="button"
-                    onClick={handleValidVoucher}
-                  >
-                    Apply
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Total:</h3>
-                  <p className="text-lg font-semibold">৳{totalPayAmount}</p>
-                </div>
-                <div className="flex justify-end">
-                  <Button
-                    className="w-full sm:w-auto bg-orange-600"
-                    type="button"
-                  >
-                    Proceed to Checkout
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+          <PaymentSection cartItems={cartItems} />
         </div>
       </div>
     )

@@ -1,3 +1,17 @@
+export interface AddressDetails {
+  _id: string;
+  fullname: string;
+  number: string;
+  address: string;
+  division: string;
+  district: string;
+  upazila: string;
+  areaStatus: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 export interface User {
   _id: string;
   name: string;
@@ -11,14 +25,15 @@ export interface User {
   status: string;
   gender: string;
   birthday: null;
-  address_details: unknown[];
-  shoppingCart: unknown[];
+  address_details: AddressDetails;
+  shoppingCart: CartItem[];
   oderHistoy: unknown[];
   forgotPasswordOtp: null;
   forgotPasswordExpires: null;
   role: string;
   createdAt: Date;
   updatedAt: Date;
+  wishlist: Product[];
 }
 
 export type ProductReview = {

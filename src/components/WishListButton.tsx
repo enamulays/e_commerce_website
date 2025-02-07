@@ -4,11 +4,11 @@ import CustomButton from "./CustomButton";
 import { twMerge } from "tailwind-merge";
 import { Product } from "@/type_local";
 import toast from "react-hot-toast";
-import { useAddToCartMutation } from "@/api/cartApi";
 import { redirect } from "next/navigation";
 import { useUserQuery } from "@/api/userApi";
+import { useWishlistAddDelMutation } from "@/api/productsApi";
 
-function AddToCartButton({
+function WishListButton({
   className,
   product,
   children,
@@ -18,11 +18,11 @@ function AddToCartButton({
   children: React.ReactNode;
 }) {
   const { refetch } = useUserQuery({});
-  const [addToCart] = useAddToCartMutation();
+  const [wishlistAddDel] = useWishlistAddDelMutation();
 
-  const handleAddToCart = async () => {
+  const handleWishList = async () => {
     try {
-      const response = await addToCart(product).unwrap();
+      const response = await wishlistAddDel(product?._id).unwrap();
       toast.success(response?.message);
       refetch();
     } catch (error) {
@@ -37,15 +37,12 @@ function AddToCartButton({
 
   return (
     <CustomButton
-      className={twMerge(
-        "border-themeColor hover:bg-themeColor/90 rounded-full w-full py-2",
-        className
-      )}
-      onClick={handleAddToCart}
+      className={twMerge("px-0 py-1 w-auto hover:text-themeColor", className)}
+      onClick={handleWishList}
     >
       {children}
     </CustomButton>
   );
 }
 
-export default AddToCartButton;
+export default WishListButton;

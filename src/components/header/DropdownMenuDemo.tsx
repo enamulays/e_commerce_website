@@ -35,7 +35,7 @@ const menuItem = [
   {
     label: "My Wishlist",
     icon: <IoIosHeartEmpty size={18} />,
-    path: "/wishlist",
+    path: "/favorite",
   },
 ];
 
@@ -46,17 +46,20 @@ export default function DropdownMenuDemo({
   user: User;
   handleLogout: () => void;
 }) {
+
+ 
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
           <AvatarImage
-            src={user.avatar || "/user-avater.png"}
-            alt={user.name || user.username || "User"}
+            src={user?.avatar || "/user-avater.png"}
+            alt={user?.name || user?.username || "User"}
             onError={(e) => (e.currentTarget.src = "/user-avater.png")}
           />
           <AvatarFallback>
-            {user.name?.[0] || user.username?.[0] || ""}
+            {user?.name?.[0] || user?.username?.[0] || ""}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

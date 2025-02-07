@@ -32,12 +32,12 @@ export default function UserSidebar() {
       ></div>
       <button
         onClick={() => setSideOpen(!sideOpen)}
-        className={`top-32 left-4 absolute ${sideOpen ? "hidden" : "block"}`}
+        className={`top-24 left-4 absolute ${sideOpen ? "hidden" : "block md:hidden"}`}
       >
         <HiBars3BottomRight size={25} />
       </button>
       <div
-        className={`absolute md:relative mt-10  z-20 duration-200 ${
+        className={`absolute md:relative mt-10  z-20 md:z-0 duration-200 ${
           sideOpen ? "translate-x-0 " : " -translate-x-64 md:translate-x-0"
         }`}
       >
@@ -47,7 +47,7 @@ export default function UserSidebar() {
         >
           <RxCross2 size={22} />
         </button>
-        <Card className="h-[70vh] sticky top-40 w-56 ">
+        <Card className="h-[70vh] sticky top-36 w-56 ">
           <div className=" py-4">
             <div className="flex flex-col gap-2 px-1">
               {userSidebarData.map((item, index) => (

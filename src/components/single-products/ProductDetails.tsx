@@ -87,7 +87,7 @@ function ProductDetails() {
               </span>
             </p>
             <div className="flex justify-center sm:justify-start sm:w-1/2 ">
-              <AddToCartButton className="rounded-md" product={product} />
+              <AddToCartButton className="rounded-md" product={product} >Add To Cart</AddToCartButton>
             </div>
             <PaymentMethodIcons />
           </div>

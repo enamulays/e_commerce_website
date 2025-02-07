@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({ baseUrl, credentials: "include" }),
   endpoints: (builder) => ({
     //get all products api
     allProducts: builder.query({
@@ -20,7 +20,21 @@ export const productsApi = createApi({
         method: "GET",
       }),
     }),
+
+    //Add or Remove from Wishlist
+    wishlistAddDel: builder.mutation({
+      query: (productId) => ({
+        url: "products/wishlist",
+        method: "POST",
+        credentials: "include",
+        body: { productId },
+      }),
+    }),
   }),
 });
 
-export const { useAllProductsQuery, useSingleProductQuery } = productsApi;
+export const {
+  useAllProductsQuery,
+  useSingleProductQuery,
+  useWishlistAddDelMutation,
+} = productsApi;

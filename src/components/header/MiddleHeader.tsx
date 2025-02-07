@@ -1,7 +1,5 @@
 import React from "react";
 import Container from "../Container";
-import Image from "next/image";
-import { logo } from "@/assets";
 import SearchInput from "./SearchInput";
 import Link from "next/link";
 import { CiUser } from "react-icons/ci";
@@ -9,6 +7,7 @@ import HeaderIcons from "./HeaderIcons";
 import MobileNavigation from "./MobileNavigation";
 import { User } from "@/type_local";
 import DropdownMenuDemo from "./DropdownMenuDemo";
+import { RiNextjsFill } from "react-icons/ri";
 
 function MiddleHeader({
   user,
@@ -18,10 +17,10 @@ function MiddleHeader({
   handleLogout: () => void;
 }) {
   return (
-    <div className="border-b-[1px] border-b-gray-400 bg-white z-10">
+    <div className="border-b-[1px] border-b-gray-400 bg-white relative z-30">
       <Container className="py-5 flex items-center gap-4 md:gap-6 lg:gap-20 justify-between">
         <Link href={"/"}>
-          <Image src={logo} alt="logo" className="w-28 " />
+          <RiNextjsFill size={30} />
         </Link>
         <SearchInput />
         <div className="hidden md:inline-flex items-center gap-3">
@@ -39,9 +38,12 @@ function MiddleHeader({
             </Link>
           )}
 
-          <HeaderIcons />
+          <HeaderIcons user={user} />
         </div>
-        <MobileNavigation />
+        <div className="flex items-center gap-4 md:hidden">
+          <DropdownMenuDemo user={user} handleLogout={handleLogout} />
+          <MobileNavigation />
+        </div>
       </Container>
     </div>
   );

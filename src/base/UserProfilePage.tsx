@@ -111,7 +111,8 @@ export default function UserProfilePage(): React.ReactElement {
       </div>
     );
   }
-  console.log(userData.user);
+
+
   return (
     <div className="container mx-auto py-10">
       <Card className="w-full max-w-2xl mx-auto shadow-xl">

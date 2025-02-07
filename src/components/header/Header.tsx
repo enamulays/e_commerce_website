@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import TopHeader from "./TopHeader";
+// import TopHeader from "./TopHeader";
 import MiddleHeader from "./MiddleHeader";
 import BottomHeader from "./BottomHeader";
 import { userApi, useUserLogoutMutation, useUserQuery } from "@/api/userApi";
@@ -17,7 +17,7 @@ function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const hideHeader = pathname.startsWith("/seller");
+  const hideHeader = pathname.startsWith("/seller") || pathname.startsWith("/payment");
 
   const handleLogout = async () => {
     try {
@@ -45,7 +45,7 @@ function Header() {
         hideHeader ? "hidden" : "block"
       }`}
     >
-      <TopHeader />
+      {/* <TopHeader /> */}
       <MiddleHeader user={userData?.user} handleLogout={handleLogout} />
       <BottomHeader />
     </div>
