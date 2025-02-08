@@ -19,7 +19,7 @@ function BottomHeader() {
           ))}
         </div>
         <p className="hidden md:inline-flex text-xs text-gray-400 font-medium ">
-          <span className="text-orange-600">Hotline:</span> <span className="text-black"> +8801723038039</span>
+          <span className="text-orange-600">Hotline:</span> <span className="text-black"> +88017********</span>
         </p>
       </Container>
     </div>

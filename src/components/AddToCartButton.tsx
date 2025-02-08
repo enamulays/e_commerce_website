@@ -5,8 +5,8 @@ import { twMerge } from "tailwind-merge";
 import { Product } from "@/type_local";
 import toast from "react-hot-toast";
 import { useAddToCartMutation } from "@/api/cartApi";
-import { redirect } from "next/navigation";
 import { useUserQuery } from "@/api/userApi";
+import { useRouter } from "next/navigation";
 
 function AddToCartButton({
   className,
@@ -19,6 +19,7 @@ function AddToCartButton({
 }) {
   const { refetch } = useUserQuery({});
   const [addToCart] = useAddToCartMutation();
+  const router = useRouter();
 
   const handleAddToCart = async () => {
     try {
@@ -30,7 +31,7 @@ function AddToCartButton({
       const err = error as { data?: { message?: string; isLogin: boolean } };
       toast.error(err?.data?.message);
       if (!err?.data?.isLogin) {
-        redirect("/login");
+        router.push("/login");
       }
     }
   };
