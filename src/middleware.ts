@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+  const cookieHeader = request.headers.get("cookie");
+  const token = cookieHeader
+    ? cookieHeader
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1]
+    : null;
   const referer = request.headers.get("referer");
 
   const cartReferer = referer?.includes("/cart");
@@ -30,7 +36,6 @@ export function middleware(request: NextRequest) {
   if (!cartReferer && paymentUrl) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
 
   return NextResponse.next();
 }
