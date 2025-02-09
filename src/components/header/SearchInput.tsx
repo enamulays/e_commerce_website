@@ -14,10 +14,11 @@ import { useDispatch } from "react-redux";
 
 function SearchInput() {
   const [search, setSearch] = useState("");
-  const { data } = useAllProductsQuery([]);
+  const { data} = useAllProductsQuery([]);
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
+
 
   const handleInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (pathname !== "/") {

@@ -8,8 +8,10 @@ import Banner from "./Banner";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Loader from "@/components/Loader";
+import { useAllProductsQuery } from "@/api/productsApi";
 
 function ProductsList() {
+  const { isFetching } = useAllProductsQuery([]);
   const [loading, setLoading] = useState<boolean>(true);
   const products = useSelector(
     (state: RootState) => state.allProductsSlice.filteredProducts
@@ -19,7 +21,7 @@ function ProductsList() {
     setLoading(false);
   }, []);
 
-  if (loading) {
+  if (loading || isFetching) {
     return <Loader />;
   }
 

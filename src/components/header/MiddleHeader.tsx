@@ -23,7 +23,7 @@ function MiddleHeader({
           <RiNextjsFill size={30} />
         </Link>
         <SearchInput />
-        <div className="hidden md:inline-flex items-center gap-3">
+        <div className="inline-flex items-center gap-3">
           {user ? (
             <DropdownMenuDemo user={user} handleLogout={handleLogout} />
           ) : (
@@ -39,10 +39,9 @@ function MiddleHeader({
           )}
 
           <HeaderIcons user={user} />
-        </div>
-        <div className="flex items-center gap-4 md:hidden">
-          <DropdownMenuDemo user={user} handleLogout={handleLogout} />
-          <MobileNavigation />
+          <div className="flex items-center gap-4 md:hidden">
+            <MobileNavigation />
+          </div>
         </div>
       </Container>
     </div>
